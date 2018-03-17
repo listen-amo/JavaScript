@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>我是标题</title>
+		<meta name="Keywords" content="" />
+		<meta name="Description" content="" />
+		<style type="text/css">
+			html{
+				--n:2;
+				--w:calc(var(--n) * 100px);
+				--test:red;
+			}
+			*{margin:0;padding:0;}
+			ul{list-style:none;}
+			a{text-decoration:none;color:inherit;color:var(--test);}
+			div{
+				width:var(--w);
+			}
+			#can{display:block;margin:0 auto;}
+		</style>
+	</head>
+	<body>
+
+		<ul>
+			<li>
+				<h3>抱抱</h3>
+				<p>副标题</p>
+				<img src="" alt="">
+			</li>
+			<li>
+				<h3>抱抱</h3>
+				<p>副标题</p>
+				<img src="" alt="">
+			</li>
+		</ul>
+
+
+		<a href="#">111</a>
+		<div id="test">btn</div>
+		<canvas id="can" width="500" height="500"></canvas>
+		<script>
+			var n = 0;
+			(function fn(){
+				setTimeout("document.title = n++;",5000);
+				setTimeout(fn,1000);
+			})();
+
+
+
+
+
+
+
+			/*console.log(getTagName("div"))
+			console.log(getTagName("div"))*/
+			// function getTagName(name){
+			// 	if(!getTagName.cache)getTagName.cache = {};
+			// 	var cache = getTagName.cache[name];
+			// 	if(cache){
+			// 		console.log(111)
+			// 		return cache;
+			// 	}
+			// 	var dom = getTagName.cache[name] = document.getElementsByTagName(name);
+			// 	return dom;
+			// };
+
+			/*console.log(getTagName("div"));
+			console.log(getTagName("div"));
+			function getTagName(name){
+				if(!getTagName.cache)getTagName.cache = {};
+				var cache = getTagName.cache[name];
+				return cache?
+					cache:
+					(getTagName.cache[name] = document.getElementsByTagName(name));
+			};*/
+
+			// var data = '[{"text":}]';
+
+			// document.onclick = fn.bind(null,1,2,3);
+			// function fn(a,b,c){
+			// 	window.console.log(this,a,b,c);
+			// }
+			// console.log(
+			// window.Object)
+
+
+
+			// function fn(a,b,c){
+			// 	console.log(a,b,c);
+			// }
+			// function fn1 (argument) {
+			// 	fn.apply(null, arguments) 
+			// }
+			// var num = [10,20,1,60,12,38];
+			// fn1(1,2,3);
+			// console.log(Math.max.apply(null,num));
+
+			// var tool = {
+			// 	add : function(){
+			// 		return this.a + this.b;
+			// 	},
+			// 	reduce : function(){
+			// 		return this.a - this.b;
+			// 	},
+			// 	calc : function(num,arg){
+			// 		return this[arg].call(num);
+			// 	}
+			// };
+			// var num = {
+			// 	a : 10,
+			// 	b : 5
+			// };
+			// tool.calc(num,"add");
+			// tool.calc(num,"reduce");
+
+			// var arg = {
+			//   w : 100,
+			//   h : 100,
+			//   bg : "red",
+			//   fn : function(){
+			//   	console.log(this);
+			//   }
+			// };
+			// test.onclick = arg.fn;
+			// rect(test,arg);
+			// function rect( dom, json ){
+			// 	var arg = {
+			// 		w : 200,
+			// 		h : 200,
+			// 		bg : "blue"
+			// 	};
+			// 	// json 参数存在时
+			// 	if(json)for(var k in json)arg[k] = json[k];
+			// 	dom.style.cssText = 
+			// 		"width:"+arg.w+"px;height:"+arg.h+"px;background-color:"+arg.bg+";";
+			// }
+			// console.log(eval("function a(){ alert(1+1) }"))
+			// var jsonString = '{"name":"小花","arg":18,"sex":"man"}';
+
+			// var arr = JSON.parse(jsonString,function(key,value){
+			//   	// 第一次必须返回value 从第二次开始操作每个属性的值
+			//   	if(key === "")return value;
+			//   	// 当返回值是 undefined时，删除对应的属性
+			// 	if(key === "arg"){
+			//       	return undefined;
+			//     }
+			// 	return value + "哟";
+			// });
+			// console.log(arr);// {"name":"----小花----","sex":"----man----"}
+
+			// var json = {
+			//     "name":"小花",
+			//     "arg":18,
+			//     "sex":"man"
+			// };
+			// // var arr = JSON.stringify(json,["arg"]);
+
+			// var arr = JSON.stringify(json,function(key,value){
+			// 	return value;
+			// });
+			// console.log(arr);
+
+			// var josnString = '{"name":"小花","arg":{"a":20,"c":30},"sex":"man"}';
+
+			// var _json = JSON.parse(josnString,(k,v)=>{
+			// 	console.log(k,v);
+			// 	if(k===""){return v;}
+			// 	return v;
+			// });
+			// console.log(_json);
+
+
+
+			// function Test(){
+			// 	this.a = 10;
+			// }
+			// Test.prototype.b = 20;
+			// function Fn(){};
+			// Fn.prototype = new Test();
+			// var objFn = new Fn();
+			// console.log(objFn.b)
+			// console.log( json.hasOwnProperty("name") );// true	
+			// console.log( json.hasOwnProperty("") );// false 
+		</script>
+	</body>
+</html>

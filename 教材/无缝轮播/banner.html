@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Examples</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="" rel="stylesheet">
+	<style type="text/css">
+		*{margin:0;padding:0;}
+		li{list-style:none;}
+		a{color:inherit;text-decoration:none;}
+		#banner,
+		#banner .view,
+		#banner .wrap li{
+			width:600px;
+			height:360px;
+		}
+		#banner{
+			position:relative;
+			margin:30px auto;
+		}
+		#banner .wrap{
+			width:1000%;
+		}
+		#banner .view,
+		#banner .wrap li{
+			overflow:hidden;
+		}
+		#banner .wrap li{
+			float:left;
+		}
+		#banner .wrap li img{
+			width:auto;
+			height:100%;
+			vertical-align: top;
+		}
+
+		#banner .btn a{
+			position:absolute;
+			top:50%;
+			margin-top:-30px;
+			width:30px;
+			height:60px;
+			background-color:#000a;
+			font:30px/60px "黑体";
+			color:#fff;
+			text-align: center;
+		}
+		#banner .btn .prev{
+			left:0;
+		}
+		#banner .btn .next{
+			right:0;
+		}
+		#banner .tab{
+			position:absolute;
+			width:100%;
+			left:0;
+			bottom:10px;
+			text-align: center;
+		}
+		#banner .tab a{
+			display:inline-block;
+			*display:inline;
+			*zoom:1;
+			width:10px;
+			height:10px;
+			margin:0 5px;
+			background-color: #ddd;
+			border-radius:50%;
+		}
+		#banner .tab .on{
+			background-color: #f66;
+		}
+		#banner .tab a:hover{
+			background-color: #f66;
+		}
+
+	</style>
+	<script src="js/move.js"></script>
+</head>
+<body>
+    <div id="banner">
+    	<div class="view">
+    		<ul class="wrap">
+	    		<li><img src="images/01.jpg" alt=""></li>
+	    		<li><img src="images/02.jpg" alt=""></li>
+	    		<li><img src="images/03.jpg" alt=""></li>
+	    		<li><img src="images/04.jpg" alt=""></li>
+	    		<li><img src="images/05.jpg" alt=""></li>
+	    	</ul>
+    	</div>
+    	<div class="btn">
+    		<a href="javascript:void(0);" class="prev">&lt;</a>
+    		<a href="javascript:void(0);" class="next">&gt;</a>
+    	</div>
+    	<div class="tab">
+    		
+    	</div>
+    </div>
+    <script>
+    	// dom 获取
+    	var
+    		dBanner = document.getElementById("banner"),
+
+    		dView = dBanner.getElementsByClassName("view")[0],
+    		dWrap = dBanner.getElementsByClassName("wrap")[0],
+    		dWrapLi = dWrap.getElementsByTagName("li"),
+
+    		dBtn = dBanner.getElementsByClassName("btn")[0],
+    		dBtnA = dBtn.getElementsByTagName("a"),
+
+    		dTab = dBanner.getElementsByClassName("tab")[0],
+    		dTabA = dTab.getElementsByTagName("a");
+
+    	// 初始值
+    	var
+    		len = dWrapLi.length,
+    		index = 1,
+			tabIndex = 0,
+    		w = dView.clientWidth,
+    		sTime = new Date();
+
+    	// 设置值
+    	var
+    		transTime = 500,// 切换时间
+    		tabTime = 2000;// 轮播间隔
+
+		/* 初始化 */
+		// 图片前后拼接 
+		var dWChildren = dWrap.children;
+		dWrap.appendChild(dWChildren[0].cloneNode(true));
+		dWrap.insertBefore(dWChildren[dWChildren.length-2].cloneNode(true),dWChildren[0]);
+		// tab添加
+		for(var i=0;i<len;i++){
+			dTab.innerHTML += '<a href="javascript:void(0);"></a>';
+		}
+		dTabA[tabIndex].className = "on";
+		// 位置矫正
+		dWrap.style.marginLeft = -index*w + "px";
+
+		// 按钮点击切换
+		for(i=0;i<2;i++){
+			dBtnA[i].onclick = function(){
+				carousel(this.className);
+			}
+		}
+
+		// 选项卡切换
+		for(i=0;i<len;i++){
+			dTabA[i].i = i;
+			dTabA[i].onclick = function(){
+				carousel(this.i);
+			}
+		}
+		// 自动轮播
+		(function auto(){
+			var time = setInterval(function(){
+				carousel("next");
+			},tabTime);
+			dBanner.onmouseenter = function(){
+				clearInterval(time);
+			}
+			dBanner.onmouseleave = function(){
+				auto();
+			}
+		})();
+
+
+ 
+		/* 轮播切换封装 */
+		function carousel(n){
+			var nTime = new Date;
+			if(nTime - sTime >= transTime){// 点击频率屏蔽
+				// 切换方向判断
+				switch(n){
+					case "prev":// 前
+						index --;
+						break;
+					case "next":// 后
+						index ++;
+						break;
+					default :
+						index = n+1; // 给定序列号
+						break;
+				}
+				// 图片切换
+				move(dWrap,{"marginLeft":-w*index},transTime,function(){
+					// 判断位置自动拉回首尾位置
+					if(index>=len+1){
+						index = 1;
+						this.style.marginLeft = -1*w + "px";
+					}else if(index <= 0){
+						index = len;
+						this.style.marginLeft = -len*w + "px";
+					}
+				});
+				// 选项卡切换
+				dTabA[tabIndex].className = "";
+				
+				tabIndex = index - 1;
+				tabIndex %= len;
+				if(tabIndex<0)tabIndex = len-1;
+
+				dTabA[tabIndex].className = "on";
+
+				sTime = nTime;
+			}
+		}
+
+
+
+
+
+
+    	
+		
+    </script>
+</body>
+</html>

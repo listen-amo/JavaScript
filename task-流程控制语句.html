@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="utf-8" />
+		<title>hello world!</title>
+		<meta name="Keywords" content="201802级基础班,01-模板" />
+		<meta name="Description" content="" />
+		<style type="text/css">
+			*{margin:0;padding:0;}
+			li{list-style:none;}
+			a{text-decoration:none;color:inherit;}
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var name = prompt("欢迎来到《参加了也没啥好处》游戏的节目现场，请输入您的名字（必须要输入名字噢，不要尝试不输入名字！会发生很可怕的事情的）：");
+			var
+				count = 0,
+				str = "嘿，输入名字来玩啊！：";
+
+			// 未输入名字的彩蛋
+			while( !name || name == "null" ){
+				name = prompt(str);
+				switch(count ++){
+					case 1:
+						str = "别嘛英雄，快输入名字：";
+						break;
+					case 2:
+						str = "别闹别闹，快来！：";
+						break;
+					case 3:
+						str = "说真的，后面没有彩蛋了！快点输入名字进入！：";
+						break;
+					case 4:
+						str = "怎么就不相信我呢！不输入等着关电脑吧：";
+						break;
+					case 20:
+						alert("好吧好吧！怕了你了！正在为您随机分配名字...");
+						name = "狗蛋";
+				}
+			}
+			// 进村
+			alert("村长：hello~\"" + name + "\" ! 欢迎来到新手村！");
+			var ifRmb = confirm("村长：呀！年轻人，我看你骨骼错位，无精打采，是百年难得一遇的普通玩家，我看你我有缘，给你个开局999，1s全史诗的机会！怎么样？");
+			if(ifRmb){
+				alert("村长：! 很好，你是一个有梦想的年轻人！但是想要成为真正的强者并不容易，接下来是对你能力的考验，你准备好了嘛！");
+				if(prompt("请输入充值金额：")<9999999999){
+					alert("由于你能力不够，挂在了考验中");	
+					alert("~~游戏结束~~");
+				}else{
+					alert("你通过了考验打败了渣渣灰，成为了这个大路上最强的强者，出任CEO迎娶白富美走向了人生巅峰");
+					alert("~~游戏结束~~");
+				}
+			}else{
+				alert("村长：左转新手任务，再见。");
+				alert("npc：这里接受新手任务：");
+				alert("恭喜你你接到了1000000个新手任务，元气满满的开始了新手任务~最终~");
+				alert("劳累过度，挂在了新手任务的路程中~");
+				alert("~~游戏结束~~");
+			}
+			/* 作业逻辑流程
+
+				A. 名字输入及彩蛋
+					1. 弹出欢迎语句+名字输入框
+					2. 未输入名字时重复输入并且根据未输入的次数进行不同的提示
+
+				B. 名字输入通过后出现两个选择
+					1. 选择1 再衍生两个不同的选择选择完成后结束
+					2. 选择2 结束
+			
+				
+			*/
+		</script>
+	</body>
+</html>

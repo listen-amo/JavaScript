@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>我是标题</title>
+		<meta name="Keywords" content="" />
+		<meta name="Description" content="" />
+		<style type="text/css">
+			*{margin:0;padding:0;}
+			ul{list-style:none;}
+			a{text-decoration:none;color:inherit;}
+			#box{
+				width:200px;
+				height:200px;
+				background-color: red;
+				opacity: 0.5;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box"></div>
+		<script>
+			var attrJson = {
+				width:300,
+				height:300,
+				opacity:1
+			};
+			function callback(){
+				console.log(this);
+			}
+
+			move(box,attrJson,2000,callback);
+
+			function move(obj,attrJson,time,callback){
+				// 获取初始值
+				var
+					sAttr = {},
+					eAttr = {};
+				for(var k in attrJson){
+					sAttr[k] = parseFloat(css(obj)[k]);
+					eAttr[k] = parseFloat(attrJson[k]);
+				}
+				// 初始化变量
+				var
+					sTime = new Date(), // 初始时间
+					nTime,				// 时间差
+					s,					// 速度
+					off = false;		// 定时开关
+
+				// 动画跑起
+				(function animat(){
+					nTime = new Date() - sTime;
+					off = nTime/time>=1;		// 事件差与目标时间比是否大于 1
+					for(var k in attrJson){
+
+						s = sAttr[k] + (eAttr[k] - sAttr[k])*nTime/time;
+
+						if(off)s = eAttr[k]; // 达到目标值后修正目标值
+
+						css(obj,[k,s + (k==="opacity"?"":"px")]);// 设置当前值
+
+					}
+
+					if(off)callback && callback.call(obj); // 回调函数
+
+					!off && setTimeout(animat,1000/60);
+				})();
+
+				
+				// 样式的获取与设置
+				function css(dom,attrSetArr){
+					// 判断是否为设置属性
+					if(attrSetArr === undefined){
+						return dom.currentStyle || getComputedStyle(dom);
+					}
+					// 兼容低版本IE 的 opacity
+					if(attrSetArr[0] === "opacity" && dom.currentStyle){
+						attrSetArr = ["filter","alpha(opacity="+(attrSetArr[1]*100)+")"];
+					}
+					dom.style[attrSetArr[0]] = attrSetArr[1];
+				}
+			}
+
+
+			// function move(obj,attrJson,time,callback){// dom,attrJson,transitionTime[,callback]
+			// 	// 获取初始值
+			// 	var
+			// 		sAttr = {},
+			// 		eAttr = {},
+			// 		changeValue = {};
+			// 	for(var k in attrJson){
+			// 		sAttr[k] = css(obj,k);
+			// 		eAttr[k] = parseFloat(attrJson[k]);
+			// 		changeValue[k] = (eAttr[k] - sAttr[k])/(3*(time/50));
+			// 	}
+
+			// 	animation(function(){
+			// 		// 计算时间 停止定时器
+			// 		if((time -= 50/3) <= 0){
+			// 			this.off = false;
+			// 			callback && callback.call(obj);	
+			// 		}
+			// 		// 遍历设置元素的属性
+			// 		for(var k in attrJson){
+			// 			sAttr[k] += changeValue[k];
+			// 			if(!this.off)sAttr[k] = eAttr[k];// 停止后修正属性值
+			// 			css(obj,k,sAttr[k] + ((k==="opacity"||k==="zIndex")?0:"px"));
+			// 		}
+			// 	});
+				
+			// 	// 动画方法封装
+			// 	function animation(fn){
+			// 		var switch_ = {
+			// 			off : true
+			// 		};
+			// 		(function fn_(){
+			// 			fn && fn.call(switch_);// 传递控制动画停止参数的对象
+			// 			if(switch_.off)requestAnimationFrame(fn_);
+			// 		})();
+			// 	};
+			// 	// 样式的获取与设置
+			// 	function css(dom,attr,val){
+			// 		// 判断是否为 IE 属性是否为透明
+			// 		var
+			// 			ifIE = dom.currentStyle,
+			// 			ifOpacity = (attr === "opacity");
+
+			// 		if(val){// 设置值
+			// 			if(ifIE && ifOpacity){// 为低版本的IE以及设置的值为透明度时
+			// 				dom.style.filter = "alpha(opacity="+val*100+")";
+			// 			}else{
+			// 				dom.style[attr] = val;
+			// 			}
+			// 		}else{// 获取值
+			// 			return parseFloat((function(){
+			// 				if(ifIE){
+			// 					// 兼容低版本IE的滤镜
+			// 					if(ifOpacity && dom.currentStyle.opacity === undefined){
+			// 						return /alpha\(opacity=([0-9][0-9]?|100)\)/.test(dom.currentStyle.filter)?RegExp.$1/100:1;
+			// 					}
+			// 					return dom.currentStyle[attr];
+			// 				}
+			// 				return getComputedStyle(dom)[attr];
+			// 			})());
+			// 		}
+			// 	}
+			// }
+		</script>
+	</body>
+</html>

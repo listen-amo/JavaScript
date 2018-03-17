@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>我是标题</title>
+		<meta name="Keywords" content="" />
+		<meta name="Description" content="" />
+		<style type="text/css">
+			*{margin:0;padding:0;}
+			ul{list-style:none;}
+			a{text-decoration:none;color:inherit;}
+			#calendar{
+				width:380px;
+				margin:30px auto;
+				box-shadow:1px 1px 12px #ddd;
+			}
+			#calendar .calendar-head,
+			#calendar .calendar-week,
+			#calendar .calendar-con{
+				display: flex;
+			}
+			#calendar .calendar-head{
+				justify-content: space-around;
+				padding:10px;
+				background-color: #0008;
+				font-size: 16px;
+				color:#eea;
+			}
+
+			#calendar .calendar-head p{
+				font-weight: bold;
+				font-size: 18px;
+				color:#fff;
+			}
+			#calendar .calendar-week{
+				justify-content: space-around;
+				padding:4px 0;
+				color:#888;
+			}
+			#calendar .calendar-week li:first-child{
+				color: red;
+			}
+			#calendar .calendar-con{
+				flex-wrap: wrap;
+			}
+			#calendar .calendar-con li{
+				width: 14.2%;
+				line-height:30px;
+				text-align: center;
+				cursor:pointer;
+			}
+			#calendar .calendar-con  .toDayBg{
+				background-color: #F1188A !important;
+			}
+			#calendar .calendar-con .c-aaa{
+				color:#aaa;
+			}
+			#calendar .calendar-con li:hover{
+				background-color: #ddd;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="calendar"></div>
+		<input type="date" value="" id="date">
+		<script>
+			
+			var amoCalendar = {
+				// 初始化
+				init (con){
+					this.con = con;
+					this.template(con);
+					this.getClass(["toDay","calendar-con","prev","next"]);
+					this.date = new Date();
+					this.setDate(this.date);
+					this.onEvent();
+					return (date)=>{
+						this.setDate(date);
+					};
+				},
+				// 模板
+				template (con){
+					con.innerHTML =
+					`
+						<div class="calendar-head">
+							<span class="prev">prev</span>
+							<p class="toDay"></p>
+							<span class="next">next</span>
+						</div>
+						<ul class="calendar-week">
+							<li>日</li>
+							<li>一</li>
+							<li>二</li>
+							<li>三</li>
+							<li>四</li>
+							<li>五</li>
+							<li>六</li>
+						</ul>
+						<ul class="calendar-con">
+						</ul>
+					`;
+				},
+				// 节点存储
+				getClass (names){
+					names.forEach((item)=>{
+						this[item] = this.con.getElementsByClassName(item);
+					});
+				},
+				// 渲染
+				render (dayArr){
+					// 今日渲染
+					this["toDay"][0].innerHTML = this.tlDate;
+					// 标红今日
+					var toDay = -1;
+					if(this.date.getFullYear() === this.year && this.date.getMonth() === this.month){
+						toDay = this.date.getDate();
+					}
+
+					// 日期渲染
+					var
+						html = "",
+						off = true,
+						dLiString = "";
+					dayArr.forEach((item,index)=>{
+						if(off && item>1 || (off=false)){
+							dLiString = "<li class='c-aaa'>"+item+"</li>";
+						}else if(item === toDay){
+							dLiString = "<li class='toDayBg'>"+item+"</li>";
+						}else{
+							dLiString = "<li>"+item+"</li>";
+						}
+						html += dLiString;
+					});
+					this["calendar-con"][0].innerHTML = html;
+				},
+				// 日期处理 存储
+				getDate (date){
+					this.toLocaleDate = date.toLocaleDateString();
+					this.year = date.getFullYear();
+					this.month = date.getMonth();
+					this.day = date.getDate();
+					this.dayLength = new Date(this.year,this.month+1,0).getDate();
+					this.week = new Date(this.year,this.month,1).getDay();
+					this.tlDate = fillZero([this.year,this.month+1,this.day]);
+					// 个位补0
+					function fillZero(arr,str){
+						str = str || "-";
+						return arr.map((item)=>{
+							return (item<=9?"0":"")+item;
+						}).join(str);
+					}
+				},
+				// 填充位置计算
+				calaDay (){
+					var dayArr = [];
+					// 获取上月的天数
+					var prevDayLength = this.tabDate (0,0).getDate();
+					// 填充上月天数
+					for(var i=prevDayLength-(this.week-1);i<=prevDayLength;i++){
+						dayArr.push(i);
+					}
+					// 填充本月天数
+					for(i=1;i<=this.dayLength;i++){
+						dayArr.push(i);
+					}
+					return dayArr;
+				},
+				// 设置日期
+				setDate (data){
+					this.getDate(data);
+					this.render(this.calaDay());
+				},
+				// 日切切换
+				tabDate (n,day){
+					day = day===undefined?1:0;
+					var
+						month = this.month,
+						year = this.year;
+					month += n?1:-1;
+					if(month<-1){
+						month = 12;
+						year --;
+					}else if(month>12){
+						month = 1;
+						year ++;
+					}
+					return new Date(year,month,day);
+				},
+				// 事件绑定
+				onEvent (){
+					this.prev[0].onclick = ()=>{
+						this.setDate(this.tabDate(0));
+					}
+					this.next[0].onclick = ()=>{
+						this.setDate(this.tabDate(1));
+					}
+				}
+			};
+			var setDate = amoCalendar.init(calendar);
+			date.onchange = function(){
+				setDate(new Date(this.value));
+			}
+
+		</script>
+	</body>
+</html>

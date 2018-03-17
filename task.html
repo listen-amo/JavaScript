@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Examples</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="" rel="stylesheet">
+	<style type="text/css">
+		*{margin:0;padding:0;}
+		li{list-style:none;}
+		a{color:inherit;text-decoration:none;}
+		b{
+			border:1px solid red;
+			margin:0 5px;
+		}
+	</style>
+</head>
+<body>
+    <ul>
+    	<li style="width:100px;" id="head"></li>
+    </ul>
+    <script>
+
+
+		// for(var i=1;i<10;i++){
+		// 	for(var j=1;j<i+1;j++){
+		// 		document.write("<b>"+j+"×"+i+"="+j*i+"</b>");
+		// 	}
+		// 	document.write("<br />");
+		// }
+
+		// for(var i=1;i<10;i++){
+		// 	for(var j=1;j<9+i;j++){
+		// 		document.write(j<(10-i)?"_":"*");
+		// 	}
+		// 	document.write("<br />");
+		// }
+		// rhombus(10);
+		// function rhombus(line){
+		// 	var num = line/2;
+		// 	for(var i=1;i<line;i++){
+		// 		for(var j=1,off = true;j<num+i;j++){
+		// 			document.write(j<(10-i)?"_":"*");
+		// 		}
+		// 		document.write("<br />");
+		// 	}
+		// }
+		var line = 9;
+		var line_2 = line/2;
+		var off = true;
+		for(var i=0;i<line;i++){
+			off = i<=line_2;
+			for(var j=0;j<line_2+(off?i:line-i-1);j++){
+				// if(off){
+				// 	document.write(j+1<line_2-i?'_':'*');
+				// }else{
+				// 	document.write(j<i-line_2?'_':'*');
+				// }
+				document.write((off?j+1<line_2-i:j<i-line_2)?'&nbsp;&nbsp;':'0');
+			}
+			document.write('<br />');
+		}
+		/*
+			    *
+			   ***
+			  *****
+			   ***
+			    *
+
+			      *
+			     **
+			    ***
+			     **
+			      *
+			
+		*/
+		
+    </script>
+</body>
+</html>

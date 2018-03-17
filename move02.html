@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>我是标题</title>
+		<meta name="Keywords" content="" />
+		<meta name="Description" content="" />
+		<style type="text/css">
+			*{margin:0;padding:0;}
+			ul{list-style:none;}
+			a{text-decoration:none;color:inherit;}
+			#box{
+				width:200px;
+				height:200px;
+				margin-left:500px;
+				background-color: red;
+				opacity: 0.5;
+			}
+		</style>
+	</head>
+	<body>
+<div id="box"></div>
+<script>
+
+	move(box,["width",100],1);
+
+	function move(obj,attrArr,speed,callback){
+		/* 参数说明
+			obj：dom节点
+			attrArr：改变的属性与结果值 数组格式 ==> ["width",200]
+			speed：改变的速度
+			callback：回调函数
+
+		*/
+		// 初始设置值
+		attrArr[1] = parseFloat(attrArr[1]);
+
+		// 获取初始值
+		var
+			val = parseFloat(getStyle(obj)[attrArr[0]]),
+			sValue = [val,val<=attrArr[1]?speed:-speed],
+			timer = setInterval(function(){
+
+				sValue[0] += sValue[1];
+
+				if(
+					sValue[1]>=0?
+						sValue[0]/attrArr[1]:
+						attrArr[1]/sValue[0] >= 1
+				){
+					clearInterval(timer);
+					sValue[0] = attrArr[1];
+					callback && callback();
+				}
+				obj.style[attrArr[0]] = sValue[0] + "px";
+			},1000/60);
+	}
+	function getStyle(obj){
+		return obj.currentStyle || getComputedStyle(obj);
+	}
+</script>
+	</body>
+</html>

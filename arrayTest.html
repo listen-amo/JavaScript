@@ -1,0 +1,389 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>我是标题</title>
+		<meta name="Keywords" content="" />
+		<meta name="Description" content="" />
+		<style type="text/css">
+			*{margin:0;padding:0;}
+			ul{list-style:none;}
+			a{text-decoration:none;color:inherit;}
+			#can{display:block;margin:0 auto;}
+			body{
+				text-align: center;
+			}
+			#box{
+				width: 300px;
+				height: 300px;
+				margin: 0 auto;
+				border: 1px solid red;
+			}
+			p{
+				display: inline-block;
+				width: 200px;
+				height: 200px;
+				background-color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<p class="a b c" id="test">4</p>
+		<script>
+			var json = '{"a":1}';
+			console.log(JSON.parse(json))
+			// toggleCass("b c d",test);
+			function toggleCass(cNames,dom){
+				var cName = dom.className.trim();
+				if(!cName){dom.className = cNames;return;};
+				var
+				cNameArr = cName.split(" "),
+				addNameArr = cNames.trim().split(" "),
+				len = cNameArr.length,
+ 				addLen = addNameArr.length;
+
+				// 遍历判断
+				// var off;
+				// for(var i=0;i<addLen;i++){
+				// 	off = true;
+				// 	for(var j=cNameArr.length-1;j>=0;j--){
+				// 		if(addNameArr[i] === cNameArr[j]){
+				// 			cNameArr.splice(j,1);
+				// 			off = false;
+				// 		}
+				// 	}
+				// 	if(off){
+				// 		cNameArr.push(addNameArr[i]);
+				// 	}
+				// }
+				// dom.className = cNameArr.join(" ");
+
+				// 筛选
+				// dom.className = cNameArr.filter(function(item){
+				// 	var ind = addNameArr.indexOf(item);
+				// 	return ind === -1?true:(addNameArr.splice(ind,1),false);
+				// }).concat(addNameArr).join(" ");
+
+				// 
+
+			}
+
+
+
+
+			// removeClass("a b c d",test);
+			function removeClass(reNames,dom){
+				var cName = dom.className.trim();
+				if(!cName)return;
+				var
+					cNameArr = cName.split(" "),
+					reNameArr = reNames.trim().split(" "),
+					len = cNameArr.length,
+					reLen = reNameArr.length;
+
+				// 遍历剔除
+				// for(var i=0;i<reLen;i++){
+				// 	for(var j=0;j<cNameArr.length;j++){
+				// 		if(reNameArr[i] === cNameArr[j]){
+				// 			cNameArr.splice(j,1);
+				// 		}
+				// 	}
+				// }
+				// dom.className = cNameArr.join(" ");
+
+				// 筛选剔除
+				// dom.className = cNameArr.filter(function(item){
+				// 	return reNameArr.indexOf(item) === -1;
+				// }).join(" ");
+
+
+				// 正则
+				// reNameArr.forEach( function(item) {
+				// 	cName = cName.replace(new RegExp("(?<=^|\\s)"+item+"(\\s|$)+","g"),"");
+				// });
+				// dom.className = cName;
+			}
+
+			// addClass("a",test);
+			// addClass("b d",test);
+			function addClass(addNames,dom){
+				var cName = dom.className.trim();
+				if(!cName){dom.className = addNames;return;};
+				var
+					cNameArr = cName.split(" "),
+					addNameArr = addNames.trim().split(" "),
+					len = cNameArr.length,
+					addLen = addNameArr.length;
+
+				if(len === 1 && addLen === 1 && cName !== addNames){
+					dom.className += " " + addNames;
+				}else{
+
+					// 筛选剔除添加项的重复项
+					// var str = addNameArr.filter(function(item){
+					// 	return cNameArr.indexOf(item) === -1?item:false;
+					// }).join(" ");
+					// dom.className += str?" "+str:"";
+
+					// 遍历剔除添加项的重复项
+					// for(var i=0;i<len;i++){
+					// 	for(var j=0;j<addNameArr.length;j++){
+					// 		if(cNameArr[i] === addNameArr[j]){
+					// 			addNameArr.splice(j,1);
+					// 			break;
+					// 		}
+					// 	}
+					// }
+					// var str = addNameArr.join(" ")
+					// dom.className += str?" "+str:"";
+
+					// 全部添加然后去重
+					// var cArr = cNameArr.concat(addNameArr);
+					// dom.className = cArr.filter(function(item,ind){
+					// 	return cArr.indexOf(item) === ind;
+					// }).join(" ");
+
+					// 对象属性的唯一
+					// var nameJson = {};
+					// var cArr = cNameArr.concat(addNameArr);
+					// cArr.forEach(function(item){
+					// 	nameJson[item] = null;
+					// });
+					// dom.className = Object.keys(nameJson).join(" ");
+
+					// 正则的方式
+					// addNameArr.forEach( function(item, index) {
+					// 	cName += new RegExp("(?<=^|\\s)"+item+"(\\s|$)+").test(cName)?"":" "+item; 
+					// });
+					// dom.className = cName;
+				}
+			}
+
+			
+			// var json = {
+			// 	"a-b":1,
+			// 	fn:function(){
+
+			// 	}
+			// }
+			// console.log(json)
+			// // 找出数组中的的 item 元素移除并且返回新的数组
+			// var item = 2;
+			// var newArr = arr.filter((i)=>{
+			// 	return i !== item;
+			// });
+			// console.log(newArr)
+			// // 统计一个字符串中与item出现的次数
+			// var count = 0;
+			// // "123465789".split("1").length-1;
+			// // 找出数组中重复出现的元素,返回一个新数组
+			// var _arr = [arr[0]],
+			// res = [];
+			// arr.forEach((item)=>{
+			// 	// if(_arr.indexOf(item) === -1){
+			// 	// 	_arr.push(item);
+			// 	// }else if(res.indexOf(item) === -1){
+			// 	// 	res.push(item);
+			// 	// }
+			// 	if(arr.indexOf(item) !== arr.lastIndexOf(item) && res.indexOf(item) === -1){
+			// 		res.push(item);
+			// 	}
+			// });
+			// console.log(res)
+
+			// var arr = [1,1,"1","1",200,"1","1",2,3,"1","1",3,1,1,1];
+	  //   	var dP = document.getElementsByTagName("p");
+	  //   	var newDP = [].slice.call(dP);
+	  //   	// newDP.splice(2,0,newDP[0],newDP[2]);
+	  //   	// var str = "12345";
+	  //   	// var _str = str.replace(/1234(?:5)/,"*");
+	  //   	// console.log(_str)
+	  //   	// console.log(/1234(?:5)/.test("12346"));
+	  //   	// // 1233@qq.com
+	  //   	// // /1233@qq.com/
+	  //   	// console.log( /^(?!0|[\u4E00-\u9FA5])\w+@\w+\.\w+$/.test("_@a.com"));
+	  //   	// console.log(arr)
+			// console.log(unique(arr));
+
+			// function unique(arr){
+			// 	if(arr instanceof Array){
+			// 		return Array.from(new Set(arr));
+			// 	}
+			// }
+			
+			// function unique(arr){
+			// 	if(arr instanceof Array){
+			// 		arr.sort();
+			// 		var _arr = [arr[0]];
+
+			// 		(function fn(index){
+			// 			if(index >= 1){
+			// 				if(arr[index] != arr[index-1]){
+			// 					_arr.push(arr[index]);
+			// 				}
+			// 				fn(index-1);
+			// 			}
+			// 		})(arr.length-1);
+
+			// 		return _arr;
+			// 	}
+			// }
+
+
+			// function unique(arr){
+			// 	if(arr instanceof Array){
+			// 		var _arr = [];
+			// 		for(var i=0,len=arr.length;i<len;i++){
+			// 			if(arr.indexOf(arr[i]) === i){
+			// 				_arr.push(arr[i]);
+			// 			}
+			// 		}
+			// 		return _arr;
+			// 	}
+			// }
+			// function indexOf(obj,arr){
+			// 	var index = -1;
+			// 	for(var i=0,len=arr.length;i<len;i++){
+			// 		if(arr[i] === obj){index = i;break;}
+			// 	}
+			// 	return index;
+			// }
+
+
+			// function unique(arr){
+			// 	if(arr instanceof Array){
+			// 		return arr.filter(function(item,index,Arr){
+			// 			return Arr.indexOf(item) === index;
+			// 		});
+			// 	}
+			// }
+
+
+			// function unique(arr){
+			// 	if(arr instanceof Array){
+			// 		var _arr = [arr[0]];
+			// 		for(var i=1,len=arr.length;i<len;i++)
+			// 			if(_arr.indexOf(arr[i]) === -1)_arr.push(arr[i]);
+
+			// 		return _arr;
+			// 	}
+			// }			
+
+			// function unique(arr){
+			// 	if(arr instanceof Array){
+			// 		arr.sort((x,y)=>{
+			// 			if(typeof x === "string"){
+			// 				return 1;
+			// 			}else{
+			// 				return x-y;
+			// 			}
+			// 		});
+			// 		console.log(arr);
+			// 		var arr1 = [arr[0]];
+			// 		for(var i=1,len = arr.length;i<len;i++){
+			// 			if(arr[i]!=arr1[arr1.length-1])arr1.push(arr[i]);
+			// 		} 
+			// 		return arr1;
+			// 	}
+			// }
+
+			// function unique(arr){
+			// 	if(arr instanceof Array){
+			// 		var
+			// 			arr1 = [arr[0]],
+			// 			len = arr.length,
+			// 			off;
+			// 		for(var i=1;i<len;i++){
+			// 			off = true;
+			// 			for(var j=0;j<arr1.length;j++){
+			// 				if(arr[i] === arr1[j]){
+			// 					off=false;
+			// 					break;
+			// 				}	
+			// 			}
+			// 			if(off)arr1.push(arr[i]);
+			// 		} 
+			// 		return arr1;
+			// 	}
+			// }
+			// for(var i=0;i<arr.length-1;i++){
+			// 	for(var j=i+1;j<arr.length;){
+			// 		arr[i] === arr[j]?arr.splice(j,1):j++;
+			// 	}
+			// }
+
+			// var arr = [1,1,1,2,2,3,3,1];
+			// function unique(arr){
+			//   if(arr instanceof Array){
+			//     for(var i=0;i<arr.length-1;i++){
+			//       for(var j=i+1;j<arr.length;){
+			//         arr[i] === arr[j]?arr.splice(j,1):j++;
+			//       }
+			//     } 
+			//   }
+			//   return arr;
+			// }
+
+			// function unique(arr){
+			//   if(arr instanceof Array){
+			//     for(var i=0;i<arr.length-1;i++){
+			//       for(var j=i+1;j<arr.length;j++){
+			//         if(arr[i] === arr[j])delete arr[j];
+			//       }
+			//     } 
+			//   }
+			//   return arr;
+			// }
+
+			// console.log(unique(arr));
+			// var oP = document.getElementsByTagName("p");
+			// console.log([...oP] instanceof Array);
+			//var a = 1;
+			// console.log(a?(a++,a):3)
+			// function getClass(name,parent){
+			// 	parent = parent || document;
+			// 	if(typeof name !== "string" && typeof paent !== "object")return;
+			// 	if(parent.getElementsByClassName){
+			// 		return parent.getElementsByClassName(name);
+			// 	}else{
+			// 		var
+			// 			all = parent.getElementsByTagName("*"),
+			// 			arr = [],
+			// 			cName = cNames = "";
+			// 		for(var i=0,lenI=all.length;i<lenI;i++){
+			// 			cName = all[i].className;
+			// 			if(cName){
+			// 				cNames = cName.split(" ");
+			// 				for(var j=0,lenJ=cNames.length;j<lenJ;j++){
+			// 					if(cNames[j] === name){
+			// 						arr.push(all[i]);
+			// 						break;
+			// 					}
+			// 				}
+			// 			}
+			// 		}
+			// 		return arr;
+			// 	}
+			// }
+
+			// function getClass(name,parent){
+			// 	parent = parent || document;
+			// 	if(typeof name !== "string" && typeof paent !== "object")return;
+			// 	if(parent.getElementsByClassName&&false){
+			// 		return parent.getElementsByClassName(name);
+			// 	}else{
+			// 		var
+			// 			all = [].slice.call(parent.getElementsByTagName("*")),
+   //                      cName = "";
+			// 		return all.filter(function(item){
+   //                    	cName = item.className;
+			// 			return cName?cName.split(" ").some(function(names){
+			// 				return names === name;
+			// 			}):false;
+			// 		});
+			// 	}
+			// }
+			
+		</script>
+	</body>
+</html>

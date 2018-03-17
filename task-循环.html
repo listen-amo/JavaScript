@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="utf-8" />
+		<title>hello world!</title>
+		<meta name="Keywords" content="201802级基础班,01-模板" />
+		<meta name="Description" content="" />
+		<style type="text/css">
+			*{margin:0;padding:0;}
+			li{list-style:none;}
+			a{text-decoration:none;color:inherit;}
+		</style>
+	</head>
+	<body>
+		
+
+		<!-- dcoument.write("1*1=1") -->
+		<!-- for(){
+			
+			for(){
+
+			}
+	
+		} -->
+		<script type="text/javascript">
+			// 99乘法表
+			var val = 0;
+			var nbsp = "&nbsp;&nbsp;"
+			for(var i=1;i<=9;i++){
+				for(var j=1;j<=i;j++){
+					val =  j*i;
+					document.write(j+"×"+i+"="+val+((val<10&&j-1)?nbsp:"")+nbsp);
+				}
+				document.write("<br />");
+			}
+
+			// 直角三边形
+			var line = 19;// 三边形行数
+			for(i=0;i<line;i++){
+				for(j=0;j<line;j++){
+					document.write(j<line-i-1?nbsp:"△");
+				}
+				document.write("<br />");
+			}
+
+			// 等边三角
+			for(i=0;i<line;i++){
+				for(j=0;j<line+i;j++){
+					document.write(j<line-i-1?nbsp:"△");
+				}
+				document.write("<br />");
+			}
+
+			// 菱形
+			var line_2 = line/2;
+			for(i=0;i<line;i++){
+				var off = i<line_2;
+				for(j=0;j<(off?line_2+i:line-i+line_2-1);j++)
+					document.write((off?j<line_2-i-1:j<i-line_2)?nbsp:"△");
+				document.write("<br />");
+			}
+		</script>
+	</body>
+</html>
