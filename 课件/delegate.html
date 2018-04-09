@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Examples</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="" rel="stylesheet">
+	<style type="text/css">
+		*{margin:0;padding:0;}
+		li{list-style:none;}
+		a{color:inherit;text-decoration:none;}
+		#box{
+			width:100%;
+			height:100%;
+            background-color: black;
+		}
+		#wrap{
+			width:200px;
+			height:200px;
+			padding:30px;
+			margin:30px auto;
+			background-color: pink;
+		}
+	</style>
+</head>
+<body>
+<div id="wrap">
+    <p>1111</p> 
+    <p>1111</p> 
+    <p>1111</p> 
+    <p>1111</p> 
+    <p>1111</p> 
+    <p>1111</p> 
+</div>
+<script>
+	
+	Event.prototype.delegate = function(){
+		var item = this.target,children = this.currentTarget.children;
+		if(item.ind){
+			this.childIndex = item.ind-1;
+		}else{
+			for(var i=0,k;k=children[i++];){
+				if(item === k){
+					item.ind = i;
+					this.childIndex = i-1;
+					break;
+				}
+			}
+		}
+	}
+	Element.prototype.removeDelegateEventListener=function(eName){
+		this.removeEventListener(eName,this.DelegateFn,this.bool);
+	}
+	Element.prototype.addDelegateEventListener=function(eName,callback,bool){
+		this.DelegateFn = eventInd(callback);
+		this.bool = bool;
+		this.addEventListener(eName,this.DelegateFn,bool);
+
+		function eventInd(callback){
+			return function(e){
+				var item = e.target,children = this.children;
+				if(item===this){return;}
+				if(item.ind){
+					ind = item.ind-1;
+				}else{
+					for(var i=0,k;k=children[i++];){
+						if(item === k){
+							item.ind = i;
+							ind = i-1;
+							break;
+						}
+					}
+				}
+				callback && callback.call(this,e,item,ind);
+			}
+		}
+	};
+	
+	wrap.addDelegateEventListener("click",function(e,item,i){
+		e.delegate();
+		console.log(e.childIndex);
+		console.log(i);
+		console.log(item);
+		console.log(this);
+	},false);
+	
+	wrap.addEventListener("dblclick",function(){
+		this.innerHTML += "<p>add</p>"
+	},false);
+</script>
+</body>
+</html>

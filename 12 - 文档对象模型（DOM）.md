@@ -18,7 +18,7 @@
 >
 > 1. 父节点 2. 子节点 3. 兄弟节点
 >
-> 而 document 对象中包含了所有的节点代表了整个DOM树的最上层其下只有一个根节点<html>（rootnode）和一个文档类型节点<!doctype html>（DocumentType）
+> 而 document 对象中包含了所有的节点代表了整个DOM树的最上层，其下只有一个根节点<html>（rootnode）和一个文档类型节点<!doctype html>（DocumentType）
 
 - **节点的类型**
 
@@ -85,7 +85,7 @@ console.log(document.baseURI);// file:///F:/home/js/t1.html
 
 ### 方法
 
-- **appendChild(node)**：将node作为其最后一个子节点插入****
+- **appendChild(node)**：将node作为其最后一个子节点插入
 - **hasChildNodes()**：判断一个元素是否有子节点，返回一个布尔值
 
 > 任何类型的节点都参与判断
@@ -160,6 +160,7 @@ console.log(document.baseURI);// file:///F:/home/js/t1.html
 - **tagName**：元素的标签名
 - **innerHTML**：元素包含的HTML内容
 - **outerHTML**：元素自身以及包含的HTML内容
+- **offsetParent**：获取元素的定位父级节点
 
 
 ### 方法
@@ -172,10 +173,116 @@ console.log(document.baseURI);// file:///F:/home/js/t1.html
 
 ### 宽高位置相关属性
 
-- **clientWidth / clientHeight**：元素的`可视`宽度 / 高度 （content+padding）
-- **offsetWidth / offsetHeight**：元素的`总`宽度 / 高度 （content+padding+border）
-- ​
+- **clientWidth / clientHeight**：元素自身的`可视`宽度 / 高度 （content+padding）
 
-## 
+> 宽度不包括滚动条的宽度，不计算超出内容的宽度
 
-##  
+- **offsetWidth / offsetHeight**：元素自身的`总`宽度 / 高度 （content+padding+border）
+
+> 宽度包括滚动条的宽度，不计算超出内容的宽度，同时需要获取整个网页的高度，需要从 document.documentElement （HTML对象）上获取
+
+- **scrollWidth / scrollHeight**：元素以及超出内容的`总`宽度 / 高度（content+padding）
+
+> 宽度包括滚动条的宽度，计算超出内容的宽度
+
+- **scrollTop / scrollLeft**：元素垂直 / 水平 滚动条滚动的距离
+
+> 一般结合 scroll 事件使用，同时需要获取整个网页的滚动高度，需要从 document.documentElement （HTML对象）上获取
+
+- **offsetLeft / offsetTop**：获取元素相对与定位父级的水平 / 垂直 距离
+
+```js
+// 获取元素相对整个网页的位置
+function getElePosition(ele){
+    var x,y,p;
+    do{
+        x = ele.offsetLeft,y = ele.offsetTop;
+        p = ele.offsetParent;
+    }while(p !== null);
+    return {x:x,y:y};
+}
+```
+
+- **Element.getBoundingClientRect()**：方法返回元素的大小及其相对于视口的位置。
+
+## 12.05 - document对象
+
+> document 对象为整个文档的最上层的对象，DOM中所有的节点都是document对象的子节点，并且包含了许多与DOM相关的方法与属性
+
+### 属性
+
+- **doctype**：返回文档的文档申明
+- **documentElement**：返回根元素( HTML )
+
+### 方法
+
+- **createElement(nodeName)**：创建一个元素节点，参数为标签名
+
+```
+var newDiv = document.createElement('div');
+newDiv.innerHTML = 'hello DOM!';
+document.body.append(newDiv);
+```
+
+- **createTextNode(text)**：创建一个文本节点，参数为需要创建的文本的字符串
+
+> 此方法与innerHTML添加的区别在于，不会影响到原有节点的属性或者方法的绑定，而innerHTML相当于重新添加了所有元素，将会失去事件的绑定****
+
+- **write()** **writeln()**
+
+### cookie
+
+> 浏览器在本地暂时存储数据的机制，通常为一些用户名，等等用户信息的存储
+
+- **cookie相关**
+  - 存储的数据会暂时被浏览器保存到本地
+  - 每个浏览器的cookie保存位置和方法不同 不能通用
+  - 存储的位置以域名为单位存储
+  - chrome浏览器不能在本地的环境存储或使用必须在后台环境
+  - 默认情况下cookie只能保存到浏览器关闭，可以通过设置时间戳调整时间
+- **cookie的读写**
+
+> cookie实际上就是存储了一对一对的字符串的键与值，所以我们只需要给cookie赋值那么就可以存储cookie但是需要注意字符串有特定的格式：
+>
+> 存储格式：'key=value;'
+>
+> 读取格式：'name=amo; password=666666'
+>
+> PS：每次只能存储一条数据，读取的时候为全部读取，多条数据之间用分号和空格隔开
+
+```js
+// 设置
+document.cookie = "name=amo;";
+document.cookie = "password=666666;";
+// 获取
+console.log( document.cookie );// name=amo; password=666666
+```
+
+- **cookie生命周期**
+
+> 默认情况下cookie只能保存到浏览器关闭，如果我们需要cookie在一段时间内保存，我们在存储cookie的时候设置过期的时间戳
+>
+> 1. 时间戳写在每条数据后的 expires 属性中代表当前数据的过期时间
+> 2. 时间戳需要转换为 UTC 的格式
+
+```js
+// 设置固定时间戳
+var dateUser = 'Sat, 07 Apr 2018 13:56:21 GMT';
+document.cookie = "name=amo;expires=" + dateUser;
+
+// 设置未来某个时间的时间戳
+var datePassword = new Date( new Date().getTime() + 10000 ).toUTCString();// 设置未来10000毫秒后的时间戳
+document.cookie = "password=666666;expires=" + date;
+```
+
+
+
+## 12.05 - 练习
+
+### 自动悬浮导航
+
+### 楼梯导航
+
+
+
+ 
