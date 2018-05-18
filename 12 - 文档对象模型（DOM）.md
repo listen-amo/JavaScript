@@ -61,12 +61,6 @@
 
 > 与innerText一致，标签将不会被解析
 
-- **baseURI**：当前网页的绝对路径
-
-```js
-console.log(document.baseURI);// file:///F:/home/js/t1.html
-```
-
 - **nextSibling / previousSibling**：距离最近的前后同级节点
 
 > 可以是元素节点，文本节点，注释节点等等
@@ -156,6 +150,7 @@ console.log(document.baseURI);// file:///F:/home/js/t1.html
 
 - **children**：获取元素的所有元素子节点，类似与css的 > 选择器
 - **firstElementChild / lastElementChild**：返回元素的（第一个 / 最后一个）
+- **nextElementSibling / previousElementSibling**：距离最近的前后同级元素节点
 - **childElementCount**：返回拥有的子节点数
 - **tagName**：元素的标签名
 - **innerHTML**：元素包含的HTML内容
@@ -213,12 +208,13 @@ function getElePosition(ele){
 
 - **doctype**：返回文档的文档申明
 - **documentElement**：返回根元素( HTML )
+- **baseURI**：当前网页的绝对路径
 
 ### 方法
 
 - **createElement(nodeName)**：创建一个元素节点，参数为标签名
 
-```
+```js
 var newDiv = document.createElement('div');
 newDiv.innerHTML = 'hello DOM!';
 document.body.append(newDiv);
@@ -226,7 +222,7 @@ document.body.append(newDiv);
 
 - **createTextNode(text)**：创建一个文本节点，参数为需要创建的文本的字符串
 
-> 此方法与innerHTML添加的区别在于，不会影响到原有节点的属性或者方法的绑定，而innerHTML相当于重新添加了所有元素，将会失去事件的绑定****
+> 此方法与innerHTML添加的区别在于，不会影响到原有节点的属性或者方法的绑定，而innerHTML相当于重新添加了所有元素，将会失去事件的绑定
 
 - **write()** **writeln()**
 

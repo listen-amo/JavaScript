@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Examples</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="" rel="stylesheet">
+	<style type="text/css">
+		*{margin:0;padding:0;}
+		li{list-style:none;}
+		a{color:inherit;text-decoration:none;}
+		#calendar{
+			width:380px;
+			margin:30px auto;
+			box-shadow:1px 1px 12px #ddd;
+		}
+		#calendar .calendar-head,
+		#calendar .calendar-week,
+		#calendar .calendar-con{
+			display: flex;
+		}
+		#calendar .calendar-head{
+			justify-content: space-around;
+			padding:10px;
+			background-color: #0008;
+			font-size: 16px;
+			color:#eea;
+		}
+
+		#calendar .calendar-head p{
+			font-weight: bold;
+			font-size: 18px;
+			color:#fff;
+		}
+		#calendar .calendar-week{
+			justify-content: space-around;
+			padding:4px 0;
+			color:#888;
+		}
+		#calendar .calendar-week li:last-child{
+			color: red;
+		}
+		#calendar .calendar-con{
+			flex-wrap: wrap;
+		}
+		#calendar .calendar-con li{
+			width: 14.2%;
+			line-height:30px;
+			text-align: center;
+			cursor:pointer;
+		}
+		#calendar .calendar-con  .toDayBg{
+			background-color: #F1188A !important;
+		}
+		#calendar .calendar-con .c-aaa{
+			color:#aaa;
+		}
+		#calendar .calendar-con li:hover{
+			background-color: #ddd;
+		}
+
+
+
+	</style>
+</head>
+<body>
+    <div id="calendar">
+    	<div class="calendar-head">
+			<span class="prev" id="prev">prev</span>
+			<p class="toDay" id="toDay"></p>
+			<span class="next" id="next">next</span>
+		</div>
+		<ul class="calendar-week">
+			<li>一</li>
+			<li>二</li>
+			<li>三</li>
+			<li>四</li>
+			<li>五</li>
+			<li>六</li>
+			<li>日</li>
+		</ul>
+		<ul class="calendar-con" id="list">
+			<li>日</li>
+			<li class='c-aaa'>一</li>
+			<li>二</li>
+			<li>三</li>
+			<li>四</li>
+			<li>五</li>
+			<li class='toDayBg'>六</li>
+		</ul>
+    </div>
+    <input type="date" id="iDate">
+    <script>
+    	
+    	var oCal = calendar(function(oDate){
+    		var strDom = '';
+    		// 填补上月的日期
+    		var
+    			week = oDate.monthInfo.oneWeek,
+    			prevDays = oDate.monthInfo.prevMonthDays+1,
+    			firstDays = week?week-1:6;
+    		for(var i=prevDays-firstDays;i<prevDays;i++){
+    			strDom+= '<li class="c-aaa">'+i+'</li>'
+    		}
+    		// 本月的日期
+    		var days = oDate.monthInfo.days;
+    		for(var i=1;i<days+1;i++){
+    			strDom+= '<li'+
+    				(i === oDate.day?' class="toDayBg"':'')
+    			+'>'+i+'</li>'
+    		}
+    		// title日期显示
+    		toDay.innerHTML = oDate.date.toLocaleDateString().replace(/\//g,'-');
+    		list.innerHTML = strDom;
+
+    		// 点击日期切换
+    		var dLi = list.getElementsByTagName('li');
+    		var
+    			y=oDate.year,
+    			m = oDate.month,
+    			d;
+    		for(var i=0;i<dLi.length;i++){
+	    		dLi[i].onclick = function(){
+
+	    			d = parseInt(this.innerHTML);
+	    			// 如果点击的为上月的某一天则月份减1
+	    			if(this.className === 'c-aaa'){
+	    				m--;
+	    			}
+	    			oCal.set(new Date(y,m,d));
+	    		}
+    		}
+
+    	});
+    	// 点击切换
+    	prev.onclick = function(){
+    		oCal.prev(0);
+    	}
+    	next.onclick = function(){
+    		oCal.next(0);
+    	}
+    	iDate.onchange = function(){
+    		oCal.set(this.value);
+    	}
+
+    	// 日历方法
+    	function calendar(cb){
+    		// 获取初始日期对象
+    		var oDate = getDate();
+    		var nDate = new Date(oDate.date);
+
+    		// 年月日信息存储
+    		var ymd = oDate.ymd;
+    		// 初始信息
+    		setFn();
+
+    		// 注册事件 
+    		var obj = {
+    			// 向下切换
+    			next:function(n){
+    				ymd[n]++;
+    				setFn();
+    			},
+    			// 向上切换
+    			prev:function(n){
+    				ymd[n]--;
+    				setFn();
+    			},
+    			// 具体日期设置
+    			set:function(date){
+    				var oDate = getDate(date);
+    				ymd = [oDate.year,oDate.month,oDate.day];
+    				setFn();
+    			}
+    		};
+    		// 执行函数（设置日期，执行回调函数）
+    		function setFn(){
+    			nDate.setFullYear.apply(nDate,ymd);
+    			cb && cb(getDate(nDate));
+    		}
+    		return obj;
+    	}
+
+    	// 解析日期对象
+   		function getDate(date){
+   			// 初始化参数
+   			switch(typeof date){
+   				case 'string':
+   				case 'number':
+   					date = new Date(date)
+   					break;
+   				case 'undefined':
+					  date = new Date();
+   					break;
+   			}
+   			// 日期对象数据拆解
+   			var d = {
+   				date : new Date(date),
+   				dateLocale : date.toLocaleString(),
+   				year:date.getFullYear(),
+   				month:date.getMonth(),
+   				week:date.getDay(),
+   				day:date.getDate(),
+   				hour:date.getHours(),
+   				minute:date.getMinutes(),
+   				second:date.getSeconds(),
+   			};
+   			// 月重要信息
+	   		d.monthInfo = {
+   				// 本月天数
+   				days : setDate(date,function(date){
+            return date.setMonth(d.month+1,0)
+          }).getDate(),
+   				// 月1日为周几
+   				oneWeek:new Date(date.setDate(1)).getDay(),
+   				// 上月的天数
+   				prevMonthDays:new Date(date.setDate(0)).getDate()
+   			};
+        function setDate(date,cb){
+          date = new Date(date);
+          cb && cb(date);
+          return date;
+        }
+   			// 年月日
+   			d.ymd = [d.year,d.month,d.day];
+   			
+   			return d;
+			
+		}
+
+
+    </script>
+</body>
+</html>

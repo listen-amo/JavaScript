@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Examples</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="" rel="stylesheet">
+	<style type="text/css">
+		*{margin:0;padding:0;}
+		li{list-style:none;}
+		a{color:inherit;text-decoration:none;}
+		.list{
+			width:500px;
+			margin:30px auto;
+			overflow:hidden;
+		}
+		.list li{
+			position:relative;
+		}
+		.list li button{
+			position:absolute;
+			bottom:10px;
+			right:10px;
+		}
+		.list1{
+
+		}
+		.list1 li{
+			float:left;
+			box-sizing:border-box;
+			width:125px;
+			height:125px;
+			border:10px solid #fff;
+			background-color: skyblue;
+		}
+		.list2 li{
+			height:60px;
+			margin:10px 0;
+			background-color: skyblue;
+		}
+		.fl{
+			float:left;
+		}
+	</style>
+</head>
+<body>
+	<ul class="list list1"  id="list1">
+		<li>
+			<div>
+				商品一
+			</div>
+			<div>
+				<button>添加</button>
+			</div>
+		</li>
+		<li>
+			<div>
+				商品二
+			</div>
+			<div>
+				<button>添加</button>
+			</div>
+		</li>
+		<li>
+			<div>
+				商品三
+			</div>
+			<div>
+				<button>添加</button>
+			</div>
+		</li>
+		<li>
+			<div>
+				商品四
+			</div>
+			<div>
+				<button>添加</button>
+			</div>
+		</li>
+		<li>
+			<div>
+				商品5
+			</div>
+			<div>
+				<button>添加</button>
+			</div>
+		</li>
+		<li>
+			<div>
+				商品6
+			</div>
+			<div>
+				<button>添加</button>
+			</div>
+		</li>
+		<li>
+			<div>
+				商品7
+			</div>
+			<div>
+				<button>添加</button>
+			</div>
+		</li>
+	</ul>
+	
+	<ul class="list list2" id="list2">
+	</ul>
+	
+
+	<script>
+		var dLi = list1.getElementsByTagName('li');
+		for(var i=0;i<dLi.length;i++){
+			dLi[i].style.backgroundColor = ranColor();
+		}
+		var dBtn = document.getElementsByTagName('button');
+		var text,bg;
+		for(var i=0;i<dBtn.length;i++){
+			dBtn[i].onclick = function(){
+				bg = this.parentNode.parentNode.style.backgroundColor;
+				text = this.parentNode.previousElementSibling.innerText;
+				var box = document.createElement('div');
+				var item = null;
+				box.innerHTML = `
+					<li>
+						<div>
+							${text}
+						</div>
+						<div>
+							<button>删除</button>
+						</div>
+					</li>
+				`;
+
+				box.getElementsByTagName('button')[0].onclick = function(){
+					this.parentNode.parentNode.remove();
+				}
+				item = box.lastElementChild;
+				item.style.backgroundColor = bg;
+				list2.append(item);
+				
+			}
+		}
+		function ranColor(){
+			var arr = [];
+			for(var i=0;i<3;i++){
+				arr.push(Math.floor(Math.random()*256))
+			}
+			return `rgb(${arr.join(',')})`;
+		}
+		// var nodeIterator = document.createNodeIterator(
+		//   document.body,
+		//   NodeFilter.SHOW_ELEMENT
+		// );
+		// console.log(nodeIterator.nextNode())
+		// console.log(nodeIterator.nextNode())
+		// console.log(nodeIterator.nextNode())
+		// a.replaceWith(b);
+	</script>
+</body>
+</html>

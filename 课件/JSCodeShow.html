@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Examples</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="" rel="stylesheet">
+	<style type="text/css">
+		*{margin:0;padding:0;}
+		li{list-style:none;}
+		a{color:inherit;text-decoration:none;}
+		#code{
+			font-size:24px;
+			font-family: "Microsoft yahei";
+			display:block;
+			width:100%;
+			margin:0 auto;
+			overflow-x:auto;
+			white-space: pre;
+			/*color:rgb(166,226,46);*/
+			color:#fff;
+			background:rgb(39,40,34);
+		}
+		.a{
+			color:rgb(102,217,239);
+		}
+		.b{
+			color:#fff;
+		}
+		.c{
+			color:rgb(249,38,114);
+		}
+		.d{
+			color:rgb(174,129,255);
+		}
+		.z{
+			color:rgb(117,113,94);
+		}
+		.s{
+			color:yellow;
+		}
+	</style>
+</head>
+<body>
+    <code id="code">
+    	"var"
+    	// 标签正则
+    	var tag = /<[^\s\/]+.*?>|<\/.+?>/g;	// 标签
+
+    	// 内容替换
+		var codeHTML = code.innerHTML;
+		for(var k in codeReg){
+			if(k === "z" || k === "s"){ // 注释和字符串剔除原有的标签
+				codeHTML = codeHTML.replace(codeReg[k],function(str){
+					return "&lt;span class="+k+">"+str.replace(tag,"")+"&lt;/span>";
+				});
+			}else{
+				codeHTML = codeHTML.replace(codeReg[k],"&lt;span class="+k+">$1&lt;/span>");
+			}
+		}
+		code.innerHTML = codeHTML;
+		function(){}
+    </code>
+    <script>
+
+    	// 匹配类型正则
+    	var codeReg = {
+			s :/((?<!\<)('|"|`)(?!>).*?('|"|`))/g,						// string
+    		c :/((?<!class)=|\+|\-|\||\?|\^|(?<!\/)\*(?!\/))/g,			// 运算符号
+    		d :/(?<![a-zA-Z0-9])(\d+)/g,								// 数字
+    		a :/(?<=\b|\(|\.)(var|let|const|in|for|function|return|replace|if|else)(?=(\b|\{|\())/g,	// 关键字
+    		b :/(\(|\)|\{|\}|(?<!&.+?);|(?<!\d)\.)/g,							// 括号
+    		z :/(\/\/.+\n|\/\*[^]+?\*\/)/g								// 注释
+    	};
+    	// 标签正则
+    	var tag = /<[^\s\/]+.*?>|<\/.+?>/g;								// 标签
+
+    	// 内容替换
+		var codeHTML = code.innerHTML;
+		for(var k in codeReg){
+			if(k === "z" || k === "s"){ // 注释和字符串剔除原有的标签
+				codeHTML = codeHTML.replace(codeReg[k],function(str){
+					return "<span class='"+k+"'>"+str.replace(tag,"")+"</span>";
+				});
+			}else{
+				codeHTML = codeHTML.replace(codeReg[k],"<span class='"+k+"'>$1</span>");
+			}
+		}
+		code.innerHTML = codeHTML;
+    </script>
+</body>
+</html>

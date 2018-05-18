@@ -269,7 +269,6 @@ document.onclick = function(e){
 #### 事件列表
 
 - **单击：click**
-
 - **双击：dblclick**
 - **移入：mouseover、mouseenter**
 - **移出：mouseout、mouseleave**
@@ -277,6 +276,7 @@ document.onclick = function(e){
 - **抬起：mouseup**
 - **移动：mousemove**
 - **右键菜单事件：contextmenu**
+- **选中文本事件：selectstart**
 
 #### 相关的Event属性
 
@@ -288,7 +288,7 @@ document.onclick = function(e){
 >
 > 2：按下了鼠标右键
 >
-> **ps：**该属性在click时间下测试结果会出现差异只有在mousedown 或者 mouseup 事件的时候相对准确
+> **ps：**该属性在click事件下测试结果会出现差异只有在mousedown 或者 mouseup 事件的时候相对准确
 
 - **e.clientX / e.clientY**：返回鼠标事件发生时相对于`浏览器窗口`的位置
 - **e.pageX / e.pageY**：返回鼠标事件发生时时相对于`整个文档`的位置
@@ -312,7 +312,29 @@ document.onclick = function(e){
   - Firefox
     - `下：-3 `
     - `上：3`
-- **兼容方法**：（略）
+- **兼容方法**
+
+```js
+// 滚动兼容
+function wheel(dom,callback){
+	var eName = "mousewheel";
+	// 判断是否为火狐
+	var ifFF = !(('on'+eName) in dom);
+	// 确定事件名
+	var event = ifFF?'DOMMouseScroll':eName;
+
+	dom.addEventListener(event,function(e){
+         // 阻止默认的滚动事件
+		e.stopPropagation();
+		e.preventDefault();
+        // 统一滚动方向的判断标准（ e.delta<0 -- 上 ， e.delta>0 -- 下）
+		e.delta = ifFF?e.detail:e.wheelDelta*-1;
+		callback && callback.call(this,e);
+	},false);
+}
+```
+
+
 
 ### 键盘事件
 
@@ -356,11 +378,14 @@ document.onclick = function(e){
 - **表单元素方法**
 
   - **focus()**：获取焦点
-  - **blur()**：失去焦点
-  - **click()**：点击元素
-  - **select()**：选中文本
 
-  > 常用于被隐藏的文件选择表单元素（type=file）
+  - **blur()**：失去焦点
+
+  - **click()**：点击元素
+
+    > 常用于被隐藏的文件选择表单元素（type=file）
+
+  - **select()**：选中文本
 
 - **表单对象方法**
 

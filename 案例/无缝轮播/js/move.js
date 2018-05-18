@@ -148,7 +148,7 @@
 		},
 		backOut: function(t, b, c, d, s){
 			if (typeof s == 'undefined') {
-				s = 3.70158;  //回缩的距离
+				s = 1.70158;  //回缩的距离
 			}
 			return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
 		}, 
