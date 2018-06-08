@@ -18,14 +18,21 @@
     - _self 当前窗口
     - _blank 新窗口
 - **getSelection()**：返回当前被选中文本的相关信息，可以通过对象的 toString() 方法拿到选中的字符串
+  - document.execCommand("copy")：复制选中的文本到粘贴板
 
 
 ```js
 var selectText = window.getSelection().toString();
 ```
 
-- **setInterval() setTimeout()**
-- **alert() confirm() prompt()**
+-  **window.scrollTo(x,y) /  window.scrollBy(x,y)**：设置窗口滚动的 绝对位置 / 相对位置
+-  **setInterval() setTimeout()**
+-  **alert() confirm() prompt()**
+
+### 事件
+
+- **load**：文档加载完成的时候触发
+- **focus / blur**：窗口 获得 / 失去 焦点
 
 ## Navigator对象
 
@@ -36,6 +43,7 @@ var selectText = window.getSelection().toString();
 **userAgent**：返回由客户机发送服务器的user-agent 头部的值，可以用于判断浏览器的版本
 
 ```js
+// 检测浏览器
 function version(){
 	// 获取浏览器的User-Agent字符串
 	var userAgent = navigator.userAgent;
@@ -66,6 +74,11 @@ function version(){
 		}
 	} 
 }
+// 判断移动端
+function isMobile(){
+   return /mobi|android|touch|mini/i.test(navigator.userAgent)
+}
+
 ```
 
 - **onLine**：返回一个布尔值，表示浏览器是否离线（true：表示没有离线）

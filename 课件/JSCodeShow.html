@@ -44,23 +44,17 @@
 </head>
 <body>
     <code id="code">
-    	"var"
-    	// 标签正则
-    	var tag = /<[^\s\/]+.*?>|<\/.+?>/g;	// 标签
+    	var formData = new FormData();
 
-    	// 内容替换
-		var codeHTML = code.innerHTML;
-		for(var k in codeReg){
-			if(k === "z" || k === "s"){ // 注释和字符串剔除原有的标签
-				codeHTML = codeHTML.replace(codeReg[k],function(str){
-					return "&lt;span class="+k+">"+str.replace(tag,"")+"&lt;/span>";
-				});
-			}else{
-				codeHTML = codeHTML.replace(codeReg[k],"&lt;span class="+k+">$1&lt;/span>");
-			}
+		for (var i = 0; i < files.length; i++) {
+		  var file = files[i];
+
+		  if (!file.type.match('image.*')) {
+			continue;
+		  }
+
+		  formData.append('photos[]', file, file.name);
 		}
-		code.innerHTML = codeHTML;
-		function(){}
     </code>
     <script>
 

@@ -1,0 +1,223 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+</head>
+<body>
+	<form action="" id="formTest">
+		<input type="text" value="111" name="amo" />
+	</form>
+	<input type="file" id="file_input" />
+	<button id="upload">upload</button>
+	<!-- <progress min="0" max="100" value="0">0% complete</progress>
+	<form>
+		<input type="text" value="111" name="a">
+	</form> -->
+	<script>
+		getJsonp('http://localhost:8080/jsonp/test.js?callback=?&a=10',data=>{
+			console.log(data)
+		})
+		function getJsonp(url,cb){
+			// 创建一个script标签
+	        var oS = document.createElement('script');
+	        // 设置请求路径
+	        oS.src = url.replace(/(?<=\=)\?(?=&|$)/,'cb_');
+	        // 导出回调函数到全局
+	        window.cb_ = cb;
+	        // 添加script标签
+	        document.body.append(oS);
+	        // 脚本加载完成后 删除导出属性以及script标签
+	        oS.onload = function(){
+	        	delete window.cb_;
+	        	this.remove();
+	        }
+	    }
+		var
+	    	fileInp = document.getElementById('file_input'),
+	        upload = document.getElementById('upload');
+
+	    // var xhr = new XMLHttpRequest();
+	    // var file = null;
+	    // upload.onclick = function(){
+
+	    // 	var formData = new FormData();
+	    // 	// formData.append('test','2222');
+	    // 	formData.append('file',fileInp.files[0]);
+
+	    // 	// console.log(formData)
+	    //     // // 获取需要上传的文件
+	    //     // file = fileInp.files[0];
+	    //     // if(!file){
+	    //     //     alert('请选择文件');
+	    //     //     return;
+	    //     // };
+	    //     // // 设置请求信息，以及向服务器发送文件名及拓展名信息
+	    //     xhr.open('post', 'http://localhost:8080/upload?filename='+fileInp.files[0].name);
+	    //     // xhr.open('post', 'http://localhost:8080/upload');
+
+	    //     // // 设置请求头信息，申明文档的类型
+	    //     // xhr.setRequestHeader('Content-Type', file.type);
+	    //     xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	    //     // // 发送数据
+	    //     xhr.send(formData);
+	    // }
+	    var file = null;
+	    // upload.onclick = function(){
+	    //     // 获取需要上传的文件
+	    //     file = fileInp.files[0];
+	    //     if(!file){
+	    //         alert('请选择文件');
+	    //         return;
+	    //     };
+	    //     ajax({
+		   //  	method:'POST',
+		   //  	url:'http://www.baidu.com/upload?filename='+file.name,
+		   //  	beforeSend:function(xhr){
+		   //  		xhr.setRequestHeader('Content-Type', file.type);
+		   //  	},
+		   //  	data:file,
+		   //  	success:function(data){
+		   //  		console.log(data)
+		   //  	},
+		   //  	error:function(status){
+		   //  		console.log(status)
+		   //  	}
+		   //  });
+	    // }
+
+	    upload.onclick = function(){
+	        ajax({
+		    	method:'get',
+		    	url:'http://localhost:8080/static/test.json',
+		    	success:function(data){
+		    		console.log(data)
+		    	},
+		    	error:function(status){
+		    		console.log(status)
+		    	}
+		    });
+	    }
+
+	    // ajax({
+	    // 	url:'1',
+	    // 	method:'get',
+	    // 	dataType:'json',
+	    // 	data:'a=b',
+	    // 	success:function(data,xhr){
+
+	    // 	},
+	    // 	error:function(status){
+
+	    // 	}
+	    // });
+	    function ajax(arg){
+	    	// 设置默认参数
+	    	var defArg = {
+		    	method:'GET',
+		    	data:'',
+		    	async:true,
+		    	dataType:'text',
+		    	beforeSend:function(){},
+		    	success:function(){
+		    		console.log('请传入回调函数以接收数据');
+		    	},
+		    	error:function(){
+		    		console.log('有错误但是，并没有用错误回调函数处理错误');
+		    	},
+		    };
+		    for(var k in arg)defArg[k] = arg[k];
+
+		    // 数据传输处理
+		    var
+				data = defArg.data,
+				method = defArg.method.toUpperCase(),
+				url = defArg.url;
+		    if(data && typeof data === 'string' && method === 'GET'){
+		    	url += '?' + data;
+		    }
+
+		    // 请求设置
+		    var xhr = new XMLHttpRequest();
+			xhr.open(defArg.method, url, defArg.async);
+			xhr.responseType = defArg.dataType;
+			defArg.beforeSend(xhr);
+			xhr.send(data);
+			xhr.onreadystatechange = function(){
+			    if(xhr.readyState=== 4 && xhr.status === 200){
+			    	// 请求成功
+			        defArg.success(xhr.response,xhr);
+			    }else if(xhr.status > 200){
+			    	// 请求失败
+			    	defArg.error(xhr.status,xhr);
+			    }
+			}
+	    }
+
+
+		// var xhr = new XMLHttpRequest();
+		// xhr.open('get','http://localhost:8080/upload?222222',true);
+		// xhr.send('11111111');
+		// xhr.onreadystatechange = function(){
+		//     if(xhr.readyState=== 4 && xhr.status === 200){
+		//         console.log(xhr.response);// {key:value}
+		//     }
+		// }
+		// var xhr = new XMLHttpRequest();
+		// var file = null;
+		// upload.onclick = function(){
+		// 	file = document.getElementById('test-input').files[0];
+		// 	if(!file){
+		// 		alert('请选择文件');
+		// 		return;
+		// 	};
+		// 	xhr.open('POST', 'http://localhost:8080/upload?filename='+file.name);
+		// 	xhr.setRequestHeader('Content-Type', file.type);
+		// 	xhr.send(file);
+		// }
+
+		// var progressBar = document.querySelector('progress');
+		// var xhr = new XMLHttpRequest();
+		// var file = null;
+		// upload.onclick = function(){
+		// 	file = document.getElementById('test-input').files[0];
+		// 	if(!file){
+		// 		alert('请选择文件');
+		// 		return;
+		// 	};
+		// 	xhr.open('POST', 'http://localhost:8080/upload?filename='+file.name);
+		// 	xhr.setRequestHeader('Content-Type', file.type);
+		// 	xhr.send(file);
+		// }
+		// xhr.upload.onprogress = function(e) {
+		// 	console.log(e.lengthComputable);
+		//     if (e.lengthComputable) {
+		//       progressBar.value = (e.loaded / e.total) * 100;
+		//       progressBar.textContent = progressBar.value; // Fallback for unsupported browsers.
+		//     }
+		// };
+		// xhr.onreadystatechange = function(){
+		// 	console.log(xhr.readyState);
+		// 	console.log(xhr.response);
+		// 	 if(xhr.readyState=== 4 && xhr.status === 200){
+		//         // 请求到的数据
+		//         console.log(xhr.response);// {key:value}
+		//     }
+		// }
+		// console.log($("form").serializeArray())
+		// $.ajaxSetup({
+		//   url: "http://localhost:8080/upload",
+		//   global: true,
+		//   type: "POST"
+		// });
+		// upload.onclick = function(){
+			
+		// 	$.ajax({ data: 'file' })
+		// }
+
+
+	</script>
+	<!-- <script src="http://localhost:8080/jsonp/test.js?callback=amo" type="text/javascript"></script> -->
+
+</body>
+</html>

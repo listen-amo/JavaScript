@@ -81,19 +81,79 @@
 			<li>日</li>
 		</ul>
 		<ul class="calendar-con" id="list">
-			<li>日</li>
-			<li class='c-aaa'>一</li>
+			
+		</ul>
+    </div>
+	<div id="calendar">
+    	<div class="calendar-head">
+			<span class="prev" id="prev">prev</span>
+			<p class="toDay" id="toDay2"></p>
+			<span class="next" id="next">next</span>
+		</div>
+		<ul class="calendar-week">
+			<li>一</li>
 			<li>二</li>
 			<li>三</li>
 			<li>四</li>
 			<li>五</li>
-			<li class='toDayBg'>六</li>
+			<li>六</li>
+			<li>日</li>
+		</ul>
+		<ul class="calendar-con" id="list2">
+			
 		</ul>
     </div>
-    <input type="date" id="iDate">
+	
     <script>
+		calederDate(list,toDay);
+		// 下月天数
+		calederDate(list2,toDay2).next(1);
+
+
+		function calederDate(dom,title){
+			return calendar(function(oDate){
+				var strDom = '';
+				// 填补上月的日期
+				var
+					week = oDate.monthInfo.oneWeek,
+					prevDays = oDate.monthInfo.prevMonthDays+1,
+					firstDays = week?week-1:6;
+				for(var i=prevDays-firstDays;i<prevDays;i++){
+					strDom+= '<li class="c-aaa">'+i+'</li>'
+				}
+				// 本月的日期
+				var days = oDate.monthInfo.days;
+				for(var i=1;i<days+1;i++){
+					strDom+= '<li'+
+						(i === oDate.day?' class="toDayBg"':'')
+					+'>'+i+'</li>'
+				}
+				// title日期显示
+				title.innerHTML = oDate.date.toLocaleDateString().replace(/\//g,'-');
+				dom.innerHTML = strDom;
+
+				// 点击日期切换
+				var dLi = list.getElementsByTagName('li');
+				var
+					y=oDate.year,
+					m = oDate.month,
+					d;
+				for(var i=0;i<dLi.length;i++){
+					dLi[i].onclick = function(){
+
+						d = parseInt(this.innerHTML);
+						// 如果点击的为上月的某一天则月份减1
+						if(this.className === 'c-aaa'){
+							m--;
+						}
+						oCal.set(new Date(y,m,d));
+					}
+				}
+
+			});
+		}
     	
-    	var oCal = calendar(function(oDate){
+    	/*var oCal = calendar(function(oDate){
     		var strDom = '';
     		// 填补上月的日期
     		var
@@ -132,16 +192,13 @@
 	    		}
     		}
 
-    	});
+    	});*/
     	// 点击切换
     	prev.onclick = function(){
-    		oCal.prev(0);
+    		oCal.prev(1);
     	}
     	next.onclick = function(){
-    		oCal.next(0);
-    	}
-    	iDate.onchange = function(){
-    		oCal.set(this.value);
+    		oCal.next(1);
     	}
 
     	// 日历方法

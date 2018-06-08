@@ -1,0 +1,38 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		ul{
+			width:600px;
+			margin:0 auto;
+			border:1px solid red;
+		}
+		li{
+			float: left;
+			width:100px;
+			height:40px;
+			margin:10px;
+			background-color: pink;
+			list-style:none;
+		}
+		.clearFix:after{
+			content:'';
+			display:block;
+			clear:both;
+		}
+	</style>
+</head>
+<body>
+	<ul class="clearFix">
+		<li>
+		</li>
+		<li>
+		</li>
+		<li>
+		</li>
+		<li>
+		</li>
+	</ul>
+</body>
+</html>
